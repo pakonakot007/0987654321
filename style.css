@@ -73,6 +73,14 @@ body::before {
   text-transform: uppercase;
 }
 
+.morse-code {
+  margin-left: auto;
+  font-size: 0.95rem;
+  letter-spacing: 0.35em;
+  color: var(--accent);
+  opacity: 0.9;
+}
+
 .dot {
   width: 12px;
   height: 12px;
@@ -123,6 +131,11 @@ body::before {
   font-size: 1.2rem;
   letter-spacing: 0.4em;
   text-align: center;
+}
+
+#secondary-code {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
 }
 
 .lock-box input::placeholder {

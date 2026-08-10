@@ -14,6 +14,7 @@
         <span class="dot yellow"></span>
         <span class="dot green"></span>
         <h1>CLASSIFIED INFORMATION</h1>
+        <div class="morse-code">.-&nbsp;&nbsp;---&nbsp;&nbsp;...&nbsp;&nbsp;-</div>
       </div>
 
       <div id="lock-screen" class="panel">
@@ -21,6 +22,8 @@
         <div class="lock-box">
           <label for="access-code">ACCESS CODE</label>
           <input id="access-code" type="text" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="______" pattern="\d{6}" />
+          <label for="secondary-code">รหัสที่ 2: AOST (รหัสอยู่ด้านบน)</label>
+          <input id="secondary-code" type="text" maxlength="4" autocomplete="off" placeholder="AAAA" />
           <button id="unlock-btn">UNLOCK</button>
           <p id="status-message" class="status"></p>
         </div>
