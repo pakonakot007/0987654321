@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLASSIFIED INFORMATION</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="terminal-frame">
+      <div class="header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <h1>CLASSIFIED INFORMATION</h1>
+      </div>
+
+      <div id="lock-screen" class="panel">
+        <div class="panel-title">กรุณาใส่รหัส 6 หลักเพื่อเข้าถึงข้อมูล</div>
+        <div class="lock-box">
+          <label for="access-code">ACCESS CODE</label>
+          <input id="access-code" type="text" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="______" pattern="\d{6}" />
+          <button id="unlock-btn">UNLOCK</button>
+          <p id="status-message" class="status"></p>
+        </div>
+      </div>
+
+      <div id="secret-screen" class="panel hidden">
+        <div class="panel-title success">ACCESS GRANTED</div>
+        <div class="secret-content">
+          <p>ข้อมูลที่ถูกล็อกไว้เปิดแล้ว คุณสามารถแก้ไขเนื้อหาด้านล่างได้ง่ายใน <code>index.html</code>.</p>
+          <div class="secret-grid">
+            <div class="secret-card">
+              <h2>TOP SECRET FILE</h2>
+              <p>รหัสผ่านได้รับการยืนยันแล้ว สถานะ: <strong>AUTHORIZED</strong></p>
+              <table>
+                <tr><th>CODE NAME</th><td>OPERATION NIGHTFALL</td></tr>
+                <tr><th>LEVEL</th><td>CLASSIFIED / LEVEL 5</td></tr>
+                <tr><th>ENTRY</th><td>กุญแจแห่งความจริงถูกซ่อนในเงามืดของความทรงจำ</td></tr>
+              </table>
+            </div>
+            <div class="secret-card image-card">
+              <h2>SECRET CLUE</h2>
+              <div class="image-wrap">
+                <img id="secret-image" src="assets/secret.png" alt="SECRET IMAGE" />
+              </div>
+              <p>วางไฟล์ภาพของคุณไว้ที่ <code>assets/secret.png</code> เพื่อแสดงภาพลับในหน้าปลดล็อก.</p>
+            </div>
+          </div>
+          <p class="note">หมายเหตุ: นี่เป็นระบบล็อกสำหรับเกม/ปริศนาเท่านั้น ไม่ใช่ระบบรักษาความปลอดภัยจริง</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="scanline"></div>
+  <script src="script.js"></script>
+</body>
+</html>
