@@ -1,7 +1,12 @@
 const ACCESS_CODE = "111111";
 const SECOND_ACCESS_CODE = "AOST";
+const THIRD_ACCESS_CODE = "ODKNM";
+const INVALID_FIFTH_CODE = "อะไรก็ได้";
 const codeInput = document.getElementById("access-code");
 const secondaryInput = document.getElementById("secondary-code");
+const thirdInput = document.getElementById("third-code");
+const fourthInput = document.getElementById("fourth-code");
+const fifthInput = document.getElementById("fifth-code");
 const unlockBtn = document.getElementById("unlock-btn");
 const statusMessage = document.getElementById("status-message");
 const lockScreen = document.getElementById("lock-screen");
@@ -27,6 +32,20 @@ secondaryInput.addEventListener("input", (event) => {
   statusMessage.textContent = "";
 });
 
+thirdInput.addEventListener("input", (event) => {
+  const cleanValue = sanitizeAlphaInput(event.target.value);
+  event.target.value = cleanValue;
+  statusMessage.textContent = "";
+});
+
+fourthInput.addEventListener("input", () => {
+  statusMessage.textContent = "";
+});
+
+fifthInput.addEventListener("input", () => {
+  statusMessage.textContent = "";
+});
+
 function showStatus(message, isError = true) {
   statusMessage.textContent = message;
   statusMessage.style.color = isError ? "var(--danger)" : "var(--success)";
@@ -35,18 +54,35 @@ function showStatus(message, isError = true) {
 function unlock() {
   const code = codeInput.value.trim();
   const secondaryCode = secondaryInput.value.trim();
+  const thirdCode = thirdInput.value.trim();
+  const fourthCode = fourthInput.value.trim();
+  const fifthCode = fifthInput.value.trim();
 
-  if (code.length !== 6 || secondaryCode.length !== 4) {
+  if (
+    code.length !== 6 ||
+    secondaryCode.length !== 4 ||
+    thirdCode.length !== 5 ||
+    fourthCode.length === 0 ||
+    fifthCode.length === 0 ||
+    fifthCode === INVALID_FIFTH_CODE
+  ) {
     showStatus("ACCESS DENIED — INVALID CODE");
     return;
   }
 
-  if (code === ACCESS_CODE && secondaryCode === SECOND_ACCESS_CODE) {
+  if (
+    code === ACCESS_CODE &&
+    secondaryCode === SECOND_ACCESS_CODE &&
+    thirdCode === THIRD_ACCESS_CODE
+  ) {
     showStatus("ACCESS GRANTED", false);
     lockScreen.classList.add("hidden");
     secretScreen.classList.remove("hidden");
     codeInput.value = "";
     secondaryInput.value = "";
+    thirdInput.value = "";
+    fourthInput.value = "";
+    fifthInput.value = "";
   } else {
     showStatus("ACCESS DENIED — INVALID CODE");
   }
@@ -60,6 +96,24 @@ codeInput.addEventListener("keydown", (event) => {
 });
 
 secondaryInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    unlock();
+  }
+});
+
+thirdInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    unlock();
+  }
+});
+
+fourthInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    unlock();
+  }
+});
+
+fifthInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     unlock();
   }

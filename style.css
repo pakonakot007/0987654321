@@ -133,9 +133,33 @@ body::before {
   text-align: center;
 }
 
-#secondary-code {
+#secondary-code,
+#third-code {
   text-transform: uppercase;
   letter-spacing: 0.5em;
+}
+
+#fourth-code,
+#fifth-code {
+  letter-spacing: 0.15em;
+}
+
+.clue-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.clue-panel img {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.clue-label {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(138, 193, 255, 0.92);
+  letter-spacing: 0.2em;
 }
 
 .lock-box input::placeholder {
