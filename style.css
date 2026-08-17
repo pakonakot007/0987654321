@@ -25,8 +25,8 @@ body {
 
 .qr-image {
   display: block;
-  width: min(100vw, 100vh);
-  height: min(100vw, 100vh);
+  width: min(35vw, 35vh);
+  height: min(35vw, 35vh);
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
