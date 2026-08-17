@@ -1,73 +1,49 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLASSIFIED INFORMATION</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="page-shell">
-    <div class="terminal-frame">
-      <div class="header">
-        <span class="dot red"></span>
-        <span class="dot yellow"></span>
-        <span class="dot green"></span>
-        <h1>CLASSIFIED INFORMATION</h1>
-        <div class="morse-code">.-&nbsp;&nbsp;---&nbsp;&nbsp;...&nbsp;&nbsp;-</div>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Locked Image</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="image-locker">
+      <div class="image-frame" aria-live="polite">
+        <img
+          id="locked-image"
+          src="https://cdn.phototourl.com/member/2026-08-17-e40cf14a-fa70-49e3-a871-3890afff3a1d.jpg"
+          alt="Locked image"
+        />
+        <div class="dark-overlay" id="dark-overlay"></div>
 
-      <div id="lock-screen" class="panel">
-        <div class="panel-title">กรุณากรอกรหัสทั้งหมด 5 ข้อเพื่อเข้าถึงข้อมูล</div>
-        <div class="lock-box">
-          <label for="access-code">ACCESS CODE</label>
-          <input id="access-code" type="text" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="______" pattern="\d{6}" />
-          <label for="secondary-code">รหัสที่ 2: ใส่ตัวอักษร 4 ตัว (รหัสอยู่ด้านบน)</label>
-          <input id="secondary-code" type="text" maxlength="4" autocomplete="off" placeholder="AAAA" />
-          <label for="third-code">รหัสที่ 3: ใส่ตัวอักษร 5 ตัว (ดูภาพเป็นคำใบ้)</label>
-          <input id="third-code" type="text" maxlength="5" autocomplete="off" placeholder="AAAAA" />
-          <div class="clue-panel">
-            <p class="clue-label">คำใบ้ข้อที่ 3</p>
-            <img src="assets/clue.png" alt="คำใบ้ข้อที่ 3" />
+        <div class="code-panel" id="code-panel">
+          <div class="code-hint" aria-label="Code sequence guide">
+            <span>1: 111111</span>
+            <span>2: 111154</span>
+            <span>3: ข้าวโอ๊ต</span>
+            <span>4: OAT</span>
+            <span>5: 150155</span>
+            <span>6: 230954</span>
+            <span>7: 200654</span>
+            <span>8: 010954</span>
+            <span>9: ODKNM</span>
           </div>
-          <label for="fourth-code">รหัสที่ 4: พิมพ์ อะไรก็ได้</label>
-          <input id="fourth-code" type="text" autocomplete="off" placeholder="กกกกกกก" />
-          <label for="fifth-code">รหัสที่ 5: พิมพ์ อะไรก็ได้ </label>
-          <input id="fifth-code" type="text" autocomplete="off" placeholder=" " />
-          <button id="unlock-btn">UNLOCK</button>
-          <p id="status-message" class="status"></p>
+          <div class="digit-grid" aria-label="Enter code">
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 2" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 3" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 4" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 5" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 6" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 7" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 8" />
+            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 9" />
+          </div>
+          <p id="status-message" class="status-message"></p>
         </div>
       </div>
+    </main>
 
-      <div id="secret-screen" class="panel hidden">
-        <div class="panel-title success">ACCESS GRANTED</div>
-        <div class="secret-content">
-          <p>ข้อมูลที่ถูกล็อกเปิดแล้ว .</p>
-          <div class="secret-grid">
-            <div class="secret-card">
-              <h2>TOP SECRET FILE</h2>
-              <p>รหัสผ่านได้รับการยืนยันแล้ว  <strong> </strong></p>
-              <table>
-                <tr><th>CODE NAME</th><td> kNrooatnMhaKtuiakDnko</td></tr>
-                <tr><th>LEVEL</th><td> ง่าย  </td></tr>
-                <tr><th>ENTRY</th><td>สู้ๆ นะบัดดี้อีกนิดเดียว</td></tr>
-              </table>
-            </div>
-            <div class="secret-card image-card">
-              <h2>SECRET CLUE</h2>
-              <div class="image-wrap">
-                <img id="secret-image" src="assets/secret.png" alt="SECRET IMAGE" />
-              </div>
-              <p>อันนี้คือคำใบ้ไปหาต่อเองนะ .</p>
-            </div>
-          </div>
-          <p class="note">หมายเหตุ: ต้องมีหมายเหตุด้วยหรอ อื้ม... ขี้เกียจคิดไว้คิดออกแล้วจะมาใส่ให้</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <div class="scanline"></div>
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

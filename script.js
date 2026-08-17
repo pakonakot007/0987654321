@@ -1,120 +1,153 @@
-const ACCESS_CODE = "111111";
-const SECOND_ACCESS_CODE = "AOST";
-const THIRD_ACCESS_CODE = "ODKNM";
-const INVALID_FIFTH_CODE = "อะไรก็ได้";
-const codeInput = document.getElementById("access-code");
-const secondaryInput = document.getElementById("secondary-code");
-const thirdInput = document.getElementById("third-code");
-const fourthInput = document.getElementById("fourth-code");
-const fifthInput = document.getElementById("fifth-code");
-const unlockBtn = document.getElementById("unlock-btn");
+const CORRECT_CODE = "202608170";
+const STORAGE_KEY = "photo-lock-shared-state-v1";
+const AUTO_UNLOCK_AT = new Date("2026-08-17T14:34:00+07:00").getTime();
+
+const inputs = [...document.querySelectorAll(".digit-input")];
 const statusMessage = document.getElementById("status-message");
-const lockScreen = document.getElementById("lock-screen");
-const secretScreen = document.getElementById("secret-screen");
-
-function sanitizeNumericInput(value) {
-  return value.replace(/[^0-9]/g, "");
-}
-
-function sanitizeAlphaInput(value) {
-  return value.toUpperCase().replace(/[^A-Z]/g, "");
-}
-
-codeInput.addEventListener("input", (event) => {
-  const cleanValue = sanitizeNumericInput(event.target.value);
-  event.target.value = cleanValue;
-  statusMessage.textContent = "";
-});
-
-secondaryInput.addEventListener("input", (event) => {
-  const cleanValue = sanitizeAlphaInput(event.target.value);
-  event.target.value = cleanValue;
-  statusMessage.textContent = "";
-});
-
-thirdInput.addEventListener("input", (event) => {
-  const cleanValue = sanitizeAlphaInput(event.target.value);
-  event.target.value = cleanValue;
-  statusMessage.textContent = "";
-});
-
-fourthInput.addEventListener("input", () => {
-  statusMessage.textContent = "";
-});
-
-fifthInput.addEventListener("input", () => {
-  statusMessage.textContent = "";
-});
+const body = document.body;
 
 function showStatus(message, isError = true) {
   statusMessage.textContent = message;
-  statusMessage.style.color = isError ? "var(--danger)" : "var(--success)";
+  statusMessage.classList.add("visible");
+  statusMessage.style.color = isError ? "var(--error)" : "var(--success)";
 }
 
-function unlock() {
-  const code = codeInput.value.trim();
-  const secondaryCode = secondaryInput.value.trim();
-  const thirdCode = thirdInput.value.trim();
-  const fourthCode = fourthInput.value.trim();
-  const fifthCode = fifthInput.value.trim();
+function hideStatus() {
+  statusMessage.classList.remove("visible");
+  statusMessage.textContent = "";
+}
 
-  if (
-    code.length !== 6 ||
-    secondaryCode.length !== 4 ||
-    thirdCode.length !== 5 ||
-    fourthCode.length === 0 ||
-    fifthCode.length === 0 ||
-    fifthCode === INVALID_FIFTH_CODE
-  ) {
-    showStatus("ACCESS DENIED — INVALID CODE");
+function readState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : { unlocked: false };
+  } catch (error) {
+    return { unlocked: false };
+  }
+}
+
+function writeState(unlocked) {
+  const payload = { unlocked, updatedAt: Date.now() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  if (window.BroadcastChannel) {
+    const channel = new BroadcastChannel("photo-lock-shared-state");
+    channel.postMessage(payload);
+    channel.close();
+  }
+}
+
+function unlockImage() {
+  body.classList.add("unlocked");
+  writeState(true);
+  showStatus("เปิดภาพแล้ว", false);
+  setTimeout(() => {
+    hideStatus();
+  }, 1200);
+}
+
+function evaluateCode() {
+  const currentCode = inputs.map((input) => input.value).join("");
+
+  if (currentCode.length !== 9) {
     return;
   }
 
-  if (
-    code === ACCESS_CODE &&
-    secondaryCode === SECOND_ACCESS_CODE &&
-    thirdCode === THIRD_ACCESS_CODE
-  ) {
-    showStatus("ACCESS GRANTED", false);
-    lockScreen.classList.add("hidden");
-    secretScreen.classList.remove("hidden");
-    codeInput.value = "";
-    secondaryInput.value = "";
-    thirdInput.value = "";
-    fourthInput.value = "";
-    fifthInput.value = "";
+  if (currentCode === CORRECT_CODE) {
+    unlockImage();
+    return;
+  }
+
+  showStatus("รหัสผิด");
+  inputs.forEach((input) => {
+    input.value = "";
+  });
+  inputs[0].focus();
+  setTimeout(() => {
+    hideStatus();
+  }, 1100);
+}
+
+function applyState(state) {
+  const unlocked = Boolean(state && state.unlocked);
+  if (unlocked || Date.now() >= AUTO_UNLOCK_AT) {
+    body.classList.add("unlocked");
   } else {
-    showStatus("ACCESS DENIED — INVALID CODE");
+    body.classList.remove("unlocked");
   }
 }
 
-unlockBtn.addEventListener("click", unlock);
-codeInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    unlock();
+inputs.forEach((input, index) => {
+  input.addEventListener("input", (event) => {
+    const value = event.target.value.replace(/\D/g, "").slice(0, 1);
+    event.target.value = value;
+    hideStatus();
+
+    if (value && index < inputs.length - 1) {
+      inputs[index + 1].focus();
+    }
+
+    evaluateCode();
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Backspace" && !event.target.value && index > 0) {
+      inputs[index - 1].focus();
+    }
+
+    if (event.key === "Enter") {
+      evaluateCode();
+    }
+  });
+
+  input.addEventListener("paste", (event) => {
+    event.preventDefault();
+    const pasted = (event.clipboardData || window.clipboardData)
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 9);
+
+    if (!pasted) {
+      return;
+    }
+
+    pasted.split("").forEach((digit, digitIndex) => {
+      if (inputs[digitIndex]) {
+        inputs[digitIndex].value = digit;
+      }
+    });
+
+    const nextTarget = inputs[Math.min(pasted.length, inputs.length - 1)];
+    if (nextTarget) {
+      nextTarget.focus();
+    }
+
+    evaluateCode();
+  });
+});
+
+window.addEventListener("storage", (event) => {
+  if (event.key === STORAGE_KEY) {
+    const nextState = event.newValue ? JSON.parse(event.newValue) : { unlocked: false };
+    applyState(nextState);
   }
 });
 
-secondaryInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    unlock();
-  }
-});
+if (window.BroadcastChannel) {
+  const channel = new BroadcastChannel("photo-lock-shared-state");
+  channel.addEventListener("message", (event) => {
+    applyState(event.data);
+  });
+}
 
-thirdInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    unlock();
-  }
-});
+function start() {
+  const initialState = readState();
+  applyState(initialState);
 
-fourthInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    unlock();
+  if (Date.now() >= AUTO_UNLOCK_AT && !initialState.unlocked) {
+    unlockImage();
   }
-});
 
-fifthInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    unlock();
-  }
-});
+  inputs[0].focus();
+}
+
+start();
