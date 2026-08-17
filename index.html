@@ -3,47 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Locked Image</title>
+    <title>Image</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main class="image-locker">
-      <div class="image-frame" aria-live="polite">
-        <img
-          id="locked-image"
-          src="https://cdn.phototourl.com/member/2026-08-17-e40cf14a-fa70-49e3-a871-3890afff3a1d.jpg"
-          alt="Locked image"
-        />
-        <div class="dark-overlay" id="dark-overlay"></div>
-
-        <div class="code-panel" id="code-panel">
-          <div class="code-hint" aria-label="Code sequence guide">
-            <span>1: 111111</span>
-            <span>2: 111154</span>
-            <span>3: ข้าวโอ๊ต</span>
-            <span>4: OAT</span>
-            <span>5: 150155</span>
-            <span>6: 230954</span>
-            <span>7: 200654</span>
-            <span>8: 010954</span>
-            <span>9: ODKNM</span>
-          </div>
-          <div class="digit-grid" aria-label="Enter code">
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 2" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 3" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 4" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 5" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 6" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 7" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 8" />
-            <input class="digit-input" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 9" />
-          </div>
-          <p id="status-message" class="status-message"></p>
-        </div>
-      </div>
+    <main class="image-only">
+      <img
+        src="https://cdn.phototourl.com/member/2026-08-17-e40cf14a-fa70-49e3-a871-3890afff3a1d.jpg"
+        alt="Image"
+      />
     </main>
-
-    <script src="script.js"></script>
   </body>
 </html>
